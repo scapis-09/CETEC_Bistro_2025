@@ -1,4 +1,6 @@
-<h1 align="center"> <span style="color:#fee753;">Bistro CETEC 2025</span></h1>
+<h1 align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=100&size=36&pause=1000&color=14ABFF&center=true&vCenter=true&random=false&width=700&lines=%E2%9C%A9+Bistro+CETEC+2025+%E2%9C%A9" alt="Typing SVG">
+</h1>
 
 <p align="center">
   <strong>Projeto integrador CETEC-UCS (Gastronomia + TI + Administração)</strong><br>
@@ -23,3 +25,6 @@
 - 📈 **Painel administrativo** para gestão de ingressos, pratos e relatórios.
 
 ---
+
+## 🆙 <span style="color:#FF8C00;">Updates</span>
+- 📅 **11/09/2025** inicio da programação.
