@@ -16,3 +16,4 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const db = initializeApp(firebaseConfig); // VARIAVEL FIREBASE = db
+const auth = getAuth(db); // VARIAVEL AUTH = auth
