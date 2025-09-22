@@ -28,3 +28,4 @@
 
 ## 🆙 <span style="color:#FF8C00;">Updates</span>
 - 📅 **11/09/2025** inicio da programação.
+- 📅 **22/09/2025** finalização do esqueleto html do site e lógica de ingressos.
