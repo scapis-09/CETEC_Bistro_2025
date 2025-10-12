@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app"; // Importa a função para inicializar o app Firebase
-import { getAuth } from "firebase/auth"; // Importa as funções do Firebase Authentication
-
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getDatabase } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 // Your web app's Firebase configuration
 
 const firebaseConfig = {
@@ -15,5 +15,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const db = initializeApp(firebaseConfig); // VARIAVEL FIREBASE = db
-const auth = getAuth(db); // VARIAVEL AUTH = auth
+const app = initializeApp(firebaseConfig);
+
+// Exporta os serviços que você quer usar
+export const auth = getAuth(app);
+export const db = getDatabase(app);
+export default app;

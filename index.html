@@ -43,7 +43,7 @@
       <!-- DIREITA -->
       <ul class="navbar-nav align-items-center">
         <li class="nav-item pl-3">
-          <button id="btnOpenBuy" class="btn btn-light">Comprar ingresso</button>
+          <a href="compra.html" class="btn btn-light">Comprar ingresso</a>
         </li>
         <li class="nav-item pl-3">
           <button id="btnLogin" class="btn btn-outline-light btn-login">Registrar / Login</button>
@@ -145,76 +145,83 @@
 
 
 <!-- Modals (Login / Compra) -->
-<!-- Login/Register Modal -->
+<!-- Modal Login -->
 <div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header bg-light">
-        <h5 class="modal-title">Registrar / Login</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title">Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
         <form id="formLogin">
           <div class="form-group">
-            <label for="userName">Nome completo</label>
-            <input id="userName" class="form-control" required>
+            <label for="loginEmail">Email</label>
+            <input id="loginEmail" type="email" class="form-control" required>
           </div>
           <div class="form-group">
-            <label for="userEmail">Email</label>
-            <input id="userEmail" type="email" class="form-control" required>
+            <label for="loginPassword">Senha</label>
+            <input id="loginPassword" type="password" class="form-control" required>
           </div>
-          <div class="form-group">
-            <small class="form-text text-muted">Este é um login simulado para permitir a compra do ingresso (não há integração com pagamento).</small>
-          </div>
-          <button class="btn btn-primary" type="submit">Entrar</button>
+          <button class="btn btn-primary btn-block" type="submit">Entrar</button>
         </form>
+        <p class="mt-2">Não tem conta? <a href="#" id="linkToRegister">Cadastre-se aqui</a></p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Buy Modal -->
-<div class="modal fade" id="modalBuy" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- Modal Cadastro -->
+<div class="modal fade" id="modalRegister" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header bg-light">
-        <h5 class="modal-title">Comprar ingresso</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title">Cadastro</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
-        <form id="formBuy">
+        <form id="formRegister">
           <div class="form-group">
-            <label for="buyName">Nome</label>
-            <input id="buyName" class="form-control" readonly>
+            <label for="registerName">Nome completo</label>
+            <input id="registerName" class="form-control" required>
           </div>
           <div class="form-group">
-            <label for="buyEmail">Email</label>
-            <input id="buyEmail" class="form-control" readonly>
+            <label for="registerEmail">Email</label>
+            <input id="registerEmail" type="email" class="form-control" required>
           </div>
           <div class="form-group">
-            <label for="diet">Restrições alimentares (opcional)</label>
-            <textarea id="diet" class="form-control" placeholder="Ex: restrição a lactose, vegetariano, alergia a amendoim..."></textarea>
+            <label for="registerPassword">Senha</label>
+            <input id="registerPassword" type="password" class="form-control" required>
           </div>
-          <div class="form-group">
-            <label for="quantity">Quantidade de ingressos</label>
-            <input id="quantity" type="number" class="form-control" min="1" value="1">
-          </div>
-          <div class="form-group">
-            <p>Valor: <strong id="buyTotal">R$120,00</strong></p>
-          </div>
-          <button class="btn btn-success" id="btnLockBuy" type="button">Baixar ingresso</button>
+          <button class="btn btn-success btn-block" type="submit">Cadastrar</button>
         </form>
-        <div id="buyResult" class="mt-3" style="display:none"></div>
+        <p class="mt-2">Já tem conta? <a href="#" id="linkToLogin">Faça login aqui</a></p>
       </div>
     </div>
   </div>
 </div>
+
+
+
+  <script type="module">
+    // Importa o app, auth e db prontos do config
+    import app, { auth, db } from "./firebase-config.js";
+    import { ref, set, get, child } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+    </script>
+<script type="module" src="cadastro.js"></script>
 
 <!-- JS libs -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 <script src="js/ticket.js"></script>
-<script src="js/script.js"></script>
+<script type="module" src="script.js"></script>
+<script type="module" src="cadastro.js"></script>
+<script type="module" src="login.js"></script>
+
 <!-- jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
