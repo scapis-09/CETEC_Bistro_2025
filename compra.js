@@ -30,7 +30,7 @@ function updateNav() {
   }
 }
 
-// Gera campos dinâmicos
+// Gera campos dinâmicos de ingressos
 function gerarCamposExtras(qtd) {
   const container = document.getElementById("extraFields");
   container.innerHTML = "";
@@ -40,6 +40,13 @@ function gerarCamposExtras(qtd) {
     bloco.classList.add("card", "p-3", "mb-2");
     bloco.innerHTML = `
       <h6>Ingresso ${i}</h6>
+      <div class="form-group mb-2">
+        <label>Tipo do ingresso:</label>
+        <select id="tipo_${i}" class="form-select">
+          <option value="inteiro" selected>Inteiro - R$ 120,00</option>
+          <option value="meia">Meia (menor de 12 anos) - R$ 60,00</option>
+        </select>
+      </div>
       <div class="form-group mb-2">
         <label>Observações:</label>
         <input type="text" id="obs_${i}" class="form-control" placeholder="Ex: Assento preferencial">
@@ -53,32 +60,30 @@ function gerarCamposExtras(qtd) {
   }
 }
 
-/**
- * 🔹 Função que subtrai do Firebase a quantidade de ingressos comprados.
- *    Não grava observações, nome, restrições nem histórico.
- *    Pode ser chamada após o pagamento ser confirmado.
- *
- * @param {string} cpf - CPF do comprador.
- * @param {number} quantidadeComprada - Quantidade de ingressos comprados.
- */
+// Calcula total considerando ingressos inteiros e meia-entrada
+function calcularTotal() {
+  let total = 0;
+  const qtd = parseInt(document.getElementById("quantity").value, 10) || 1;
+  for (let i = 1; i <= qtd; i++) {
+    const tipo = document.getElementById(`tipo_${i}`)?.value || "inteiro";
+    total += tipo === "meia" ? 60 : 120;
+  }
+  document.getElementById("buyTotal").textContent =
+    "R$ " + total.toFixed(2).replace(".", ",");
+}
+
+// Função para subtrair quantidade no Firebase (sem registrar histórico)
 export async function registrarCompraFirebase(cpf, quantidadeComprada) {
   try {
     const dbRef = ref(db);
     const snapshot = await get(child(dbRef, `ingressosdisponiveis/${cpf}`));
-
-    if (!snapshot.exists()) {
-      console.warn(`⚠️ CPF ${cpf} não encontrado no banco de dados.`);
-      return;
-    }
+    if (!snapshot.exists()) return;
 
     const data = snapshot.val();
     const quantidadeAtual = data.quantidade || 0;
     const novaQuantidade = Math.max(quantidadeAtual - quantidadeComprada, 0);
 
-    await update(ref(db, `ingressosdisponiveis/${cpf}`), {
-      quantidade: novaQuantidade,
-    });
-
+    await update(ref(db, `ingressosdisponiveis/${cpf}`), { quantidade: novaQuantidade });
     console.log(`✅ Quantidade atualizada. Restam ${novaQuantidade} ingressos para o CPF ${cpf}.`);
   } catch (error) {
     console.error("❌ Erro ao atualizar quantidade no Firebase:", error);
@@ -92,21 +97,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const cpfStatus = document.getElementById("cpfStatus");
   const camposCompra = document.getElementById("camposCompra");
   const quantityInput = document.getElementById("quantity");
-  const totalSpan = document.getElementById("buyTotal");
   const form = document.getElementById("formCompra");
   const btnFinalizar = document.getElementById("btnFinalizar");
   const maxInfo = document.getElementById("maxInfo");
   const btnVerificarCPF = document.getElementById("btnVerificarCPF");
 
-  // Atualiza total
+  // Atualiza total ao mudar quantidade ou tipo
   quantityInput.addEventListener("input", () => {
-    const qtd = parseInt(quantityInput.value, 10) || 1;
-    if (qtd > maxIngressos) quantityInput.value = maxIngressos;
-    totalSpan.textContent = "R$ " + (quantityInput.value * 120).toFixed(2).replace(".", ",");
-    gerarCamposExtras(quantityInput.value);
+    if (parseInt(quantityInput.value, 10) > maxIngressos) quantityInput.value = maxIngressos;
+    gerarCamposExtras(parseInt(quantityInput.value, 10));
+    calcularTotal();
+  });
+
+  document.addEventListener("change", (e) => {
+    if (e.target.matches("select[id^='tipo_']") || e.target.id === "quantity") {
+      calcularTotal();
+    }
   });
 
   gerarCamposExtras(parseInt(quantityInput.value, 10) || 1);
+  calcularTotal();
 
   auth.onAuthStateChanged((user) => {
     updateNav();
@@ -117,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Verifica CPF
+    // Verificar CPF do aluno
     btnVerificarCPF.addEventListener("click", async () => {
       const cpf = cpfInput.value.trim();
       cpfStatus.textContent = "";
@@ -131,7 +141,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const dbRef = ref(db);
       const snapshot = await get(child(dbRef, `ingressosdisponiveis/${cpf}`));
-
       if (!snapshot.exists()) {
         cpfStatus.textContent = "❌ CPF não autorizado para compra.";
         return;
@@ -146,16 +155,18 @@ document.addEventListener("DOMContentLoaded", () => {
       btnFinalizar.disabled = false;
       maxInfo.textContent = `Máximo permitido: ${maxIngressos}`;
 
-      if (quantityInput.value > maxIngressos) quantityInput.value = maxIngressos;
-      gerarCamposExtras(quantityInput.value);
+      if (parseInt(quantityInput.value, 10) > maxIngressos) quantityInput.value = maxIngressos;
+      gerarCamposExtras(parseInt(quantityInput.value, 10));
+      calcularTotal();
     });
 
-    // Finalizar compra — agora só salva localmente (não altera Firebase)
+    // Finalizar compra (apenas salva localmente)
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       if (compraBloqueada) return;
 
       const cpf = cpfInput.value.trim();
+      const cpfPagador = document.getElementById("cpfPagador").value.trim();
       const quantity = parseInt(quantityInput.value, 10);
 
       if (quantity > maxIngressos) {
@@ -165,8 +176,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const observacoes = [];
       const restricoes = [];
+      const tipos = [];
 
       for (let i = 1; i <= quantity; i++) {
+        tipos.push(document.getElementById(`tipo_${i}`)?.value || "inteiro");
         observacoes.push(document.getElementById(`obs_${i}`)?.value.trim() || "");
         restricoes.push(document.getElementById(`restricao_${i}`)?.value.trim() || "");
       }
@@ -175,18 +188,18 @@ document.addEventListener("DOMContentLoaded", () => {
         name: nomeCPF,
         email: user.email || "",
         cpf,
+        cpfPagador,
         quantity,
+        tipos,
         observacoes,
         restricoes,
-        price: 120,
+        price: tipos.map(t => t === "meia" ? 60 : 120).reduce((a, b) => a + b, 0),
         date: new Date().toISOString(),
       };
 
-      // Salva localmente
       localStorage.setItem("bistroCetecCompraBloqueada", "1");
       localStorage.setItem("bistroCetecDadosCompra", JSON.stringify(dadosAtuais));
 
-      // Não atualiza Firebase aqui!
       compraBloqueada = true;
       alert("Compra registrada localmente. O pagamento será processado a seguir.");
       window.location.reload();

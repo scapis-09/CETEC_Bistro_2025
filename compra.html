@@ -48,9 +48,11 @@
     <div class="card shadow p-4">
       <h3 class="mb-3 text-center">Compra de Ingressos</h3>
       <form id="formCompra">
+
+        <!-- CPF do aluno -->
         <div class="row mb-3">
-          <div class="col-md-8">
-            <label for="cpf" class="form-label">CPF</label>
+          <div class="col-md-6">
+            <label for="cpf" class="form-label">CPF do aluno</label>
             <input type="text" id="cpf" class="form-control" placeholder="Digite seu CPF" required>
             <small id="cpfStatus" class="text-danger d-block mt-1"></small>
           </div>
@@ -59,6 +61,15 @@
           </div>
         </div>
 
+        <!-- CPF do pagador -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="cpfPagador" class="form-label">CPF do pagador</label>
+            <input type="text" id="cpfPagador" class="form-control" placeholder="Digite o CPF do pagador" required>
+          </div>
+        </div>
+
+        <!-- Quantidade de ingressos -->
         <div id="camposCompra">
           <div class="row mb-3">
             <div class="col-md-6">
