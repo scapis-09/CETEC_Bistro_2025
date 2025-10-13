@@ -521,8 +521,22 @@ html {
 
 /* Responsive additions for page-header and dish-image */
 @media (max-width: 991px) {
-  .page-header h1 {
-    font-size: 2.5rem;
+  .navbar-collapse {
+    padding: 1.5rem 0;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  
+  .navbar-nav .nav-item-btn {
+    border-bottom: none;
+  }
+  
+  .navbar-nav .nav-item-btn .btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .page-header p {
@@ -540,6 +554,7 @@ html {
   .dish-image {
     height: 250px;
   }
+
 }
 
 @media (max-width: 767px) {
