@@ -5,17 +5,16 @@ let compraBloqueada = false;
 let maxIngressos = 0;
 let nomeCPF = "";
 
-// Atualiza navbar
+// Atualiza a navbar
 function updateNav() {
   const btnLogin = document.getElementById("btnLogin");
   const user = auth.currentUser;
-
   if (!btnLogin) return;
 
   if (user) {
     btnLogin.innerHTML = `Olá, ${user.displayName || user.email} <span class="small">(sair)</span>`;
-    btnLogin.classList.remove("btn-outline-light");
-    btnLogin.classList.add("btn-light");
+    btnLogin.classList.remove("btn-outline-primary");
+    btnLogin.classList.add("btn-primary");
     btnLogin.onclick = async () => {
       if (confirm("Deseja sair?")) {
         await auth.signOut();
@@ -23,14 +22,14 @@ function updateNav() {
       }
     };
   } else {
-    btnLogin.innerHTML = "  Login";
-    btnLogin.classList.remove("btn-light");
-    btnLogin.classList.add("btn-outline-light");
+    btnLogin.innerHTML = "Login";
+    btnLogin.classList.remove("btn-primary");
+    btnLogin.classList.add("btn-outline-primary");
     btnLogin.onclick = () => (window.location.href = "index.html#login");
   }
 }
 
-// Gera campos dinâmicos de ingressos
+// Gera campos de ingressos dinamicamente
 function gerarCamposExtras(qtd) {
   const container = document.getElementById("extraFields");
   container.innerHTML = "";
@@ -60,19 +59,19 @@ function gerarCamposExtras(qtd) {
   }
 }
 
-// Calcula total considerando ingressos inteiros e meia-entrada
+// Calcula total
 function calcularTotal() {
-  let total = 0;
   const qtd = parseInt(document.getElementById("quantity").value, 10) || 1;
+  let total = 0;
   for (let i = 1; i <= qtd; i++) {
     const tipo = document.getElementById(`tipo_${i}`)?.value || "inteiro";
     total += tipo === "meia" ? 60 : 120;
   }
-  document.getElementById("buyTotal").textContent =
-    "R$ " + total.toFixed(2).replace(".", ",");
+  document.getElementById("buyTotal").textContent = "R$ " + total.toFixed(2).replace(".", ",");
+  return total;
 }
 
-// Função para subtrair quantidade no Firebase (sem registrar histórico)
+// Atualiza quantidade no Firebase
 export async function registrarCompraFirebase(cpf, quantidadeComprada) {
   try {
     const dbRef = ref(db);
@@ -80,9 +79,7 @@ export async function registrarCompraFirebase(cpf, quantidadeComprada) {
     if (!snapshot.exists()) return;
 
     const data = snapshot.val();
-    const quantidadeAtual = data.quantidade || 0;
-    const novaQuantidade = Math.max(quantidadeAtual - quantidadeComprada, 0);
-
+    const novaQuantidade = Math.max((data.quantidade || 0) - quantidadeComprada, 0);
     await update(ref(db, `ingressosdisponiveis/${cpf}`), { quantidade: novaQuantidade });
     console.log(`✅ Quantidade atualizada. Restam ${novaQuantidade} ingressos para o CPF ${cpf}.`);
   } catch (error) {
@@ -90,10 +87,38 @@ export async function registrarCompraFirebase(cpf, quantidadeComprada) {
   }
 }
 
+// Cria transação PIX
+async function Criar_transacao(arrayIngressos) {
+  try {
+    const response = await fetch("https://api-processamento-pagamentos-bistro-2025.onrender.com/ingresso/gerar_transacao", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(arrayIngressos)
+    });
+    if (!response.ok) throw new Error(`Response status: ${response.status}`);
+    return await response.json();
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+// Verifica pagamento
+async function Verificar_transacao(id_transacao) {
+  try {
+    const response = await fetch(`https://api-processamento-pagamentos-bistro-2025.onrender.com/ingresso/verificar_transacao?id_transacao=${id_transacao}`);
+    if (!response.ok) throw new Error(`Response status: ${response.status}`);
+    return await response.json();
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+// DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
   updateNav();
 
   const cpfInput = document.getElementById("cpf");
+  const cpfPagadorInput = document.getElementById("cpfPagador");
   const cpfStatus = document.getElementById("cpfStatus");
   const camposCompra = document.getElementById("camposCompra");
   const quantityInput = document.getElementById("quantity");
@@ -102,7 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const maxInfo = document.getElementById("maxInfo");
   const btnVerificarCPF = document.getElementById("btnVerificarCPF");
 
-  // Atualiza total ao mudar quantidade ou tipo
   quantityInput.addEventListener("input", () => {
     if (parseInt(quantityInput.value, 10) > maxIngressos) quantityInput.value = maxIngressos;
     gerarCamposExtras(parseInt(quantityInput.value, 10));
@@ -110,9 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener("change", (e) => {
-    if (e.target.matches("select[id^='tipo_']") || e.target.id === "quantity") {
-      calcularTotal();
-    }
+    if (e.target.matches("select[id^='tipo_']")) calcularTotal();
   });
 
   gerarCamposExtras(parseInt(quantityInput.value, 10) || 1);
@@ -127,14 +149,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Verificar CPF do aluno
     btnVerificarCPF.addEventListener("click", async () => {
       const cpf = cpfInput.value.trim();
       cpfStatus.textContent = "";
       camposCompra.style.display = "none";
       btnFinalizar.disabled = true;
 
-      if (cpf.length != 11) {
+      if (cpf.length !== 11) {
         cpfStatus.textContent = "Digite um CPF válido (11 números)";
         return;
       }
@@ -160,13 +181,12 @@ document.addEventListener("DOMContentLoaded", () => {
       calcularTotal();
     });
 
-    // Finalizar compra (apenas salva localmente)
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (compraBloqueada) return;
 
       const cpf = cpfInput.value.trim();
-      const cpfPagador = document.getElementById("cpfPagador").value.trim();
+      const cpfPagador = cpfPagadorInput.value.trim();
       const quantity = parseInt(quantityInput.value, 10);
 
       if (quantity > maxIngressos) {
@@ -174,35 +194,49 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const observacoes = [];
-      const restricoes = [];
-      const tipos = [];
-
+      const ingressos = [];
+      let valorTotal = 0;
       for (let i = 1; i <= quantity; i++) {
-        tipos.push(document.getElementById(`tipo_${i}`)?.value || "inteiro");
-        observacoes.push(document.getElementById(`obs_${i}`)?.value.trim() || "");
-        restricoes.push(document.getElementById(`restricao_${i}`)?.value.trim() || "");
+        const tipo = document.getElementById(`tipo_${i}`).value;
+        const obs = document.getElementById(`obs_${i}`).value || "";
+        const restricao = document.getElementById(`restricao_${i}`).value || "nenhuma";
+        const preco = tipo === "meia" ? 60 : 120;
+        valorTotal += preco;
+
+        ingressos.push({
+          nome: nomeCPF,
+          cpf_pagador: cpfPagador,
+          id_conta_titular: user.uid,
+          tipo,
+          restricao,
+          observacao: obs
+        });
       }
 
-      const dadosAtuais = {
-        name: nomeCPF,
-        email: user.email || "",
-        cpf,
-        cpfPagador,
-        quantity,
-        tipos,
-        observacoes,
-        restricoes,
-        price: tipos.map(t => t === "meia" ? 60 : 120).reduce((a, b) => a + b, 0),
-        date: new Date().toISOString(),
-      };
+      const result = await Criar_transacao(ingressos);
 
-      localStorage.setItem("bistroCetecCompraBloqueada", "1");
-      localStorage.setItem("bistroCetecDadosCompra", JSON.stringify(dadosAtuais));
+      if (result?.qrcode) {
+        const qrDiv = document.createElement("div");
+        qrDiv.classList.add("text-center", "mt-4");
+        qrDiv.innerHTML = `
+          <h5>Escaneie o QR Code abaixo para pagar:</h5>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(result.qrcode)}" alt="QR Code Pix" />
+          <p class="mt-3"><strong>Valor total:</strong> R$ ${valorTotal.toFixed(2).replace('.', ',')}</p>
+        `;
+        document.querySelector(".purchase-card").appendChild(qrDiv);
 
-      compraBloqueada = true;
-      alert("Compra registrada localmente. O pagamento será processado a seguir.");
-      window.location.reload();
+        alert("Transação criada! Após o pagamento, a compra será confirmada automaticamente.");
+
+        const interval = setInterval(async () => {
+          const status = await Verificar_transacao(result.id_transacao);
+          if (status?.message === "Transação paga com sucesso.") {
+            clearInterval(interval);
+            alert("✅ Pagamento confirmado! Compra finalizada com sucesso.");
+            await registrarCompraFirebase(cpf, quantity);
+            window.location.reload();
+          }
+        }, 10000);
+      }
     });
   });
 });
