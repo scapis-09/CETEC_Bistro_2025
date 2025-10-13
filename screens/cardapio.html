@@ -1,100 +1,294 @@
-<!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Cardápio Bistrô CETEC 2025</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <meta name="description" content="Cardápio completo do Bistrô CETEC 2025 - Pratos desenvolvidos pelos estudantes">
+  
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap & Icons -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-</head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="../img/logo.png" type="image/png">
+
+  </head>
 <body>
+
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg py-3 w-100 fixed-top" style="background: var(--sand); box-shadow: 0 2px 8px rgba(0,0,0,.08);">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navMain">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="container-fluid collapse navbar-collapse justify-content-between" id="navMain">
-    <!-- ESQUERDA -->
-    <ul class="navbar-nav align-items-center">
-      <li class="nav-item"><a class="nav-link" href="../index.html#about">Sobre</a></li>
-      <li class="nav-item"><a class="nav-link" href="../index.html#students">Estudantes</a></li>
-      <li class="nav-item"><a class="nav-link" href="cardapio.html">Cardápio</a></li>
-      <li class="nav-item"><a class="nav-link" href="../index.html#infos">Infos</a></li>
-    </ul>
-
-    <!-- CENTRO (LOGO) -->
-    <a class="navbar-brand mx-auto d-none d-lg-block" href="../index.html">
-      <img src="../img/logo.png" alt="Logo Bistrô CETEC" style="height:100px;">
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="../index.html">
+      <img src="../img/logo.png" alt="Logo Bistrô CETEC">
     </a>
-
-    <!-- DIREITA -->
-    <ul class="navbar-nav align-items-center">
-      <li class="nav-item pl-3">
-  <button id="btnOpenBuy" class="btn btn-light" onclick="window.location.href='../index.html#btnOpenBuy';">Comprar ingresso</button>
-      </li>
-      <li class="nav-item pl-3">
-  <button id="btnLogin" class="btn btn-outline-light btn-login" onclick="window.location.href='../index.html#btnLogin';">Registrar / Login</button>
-      </li>
-    </ul>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navMain">
+      <span class="navbar-toggler-icon"><i class="fas fa-bars" style="color: var(--blue-deep);"></i></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav ml-auto align-items-center">
+        <li class="nav-item"><a class="nav-link" href="../index.html#about">Sobre</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html#students">Estudantes</a></li>
+        <li class="nav-item"><a class="nav-link active" href="cardapio.html">Cardápio</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html#infos">Informações</a></li>
+        <li class="nav-item ml-3">
+          <a href="../compra.html" class="btn btn-primary">Comprar Ingresso</a>
+        </li>
+          <li class="nav-item pl-2">
+            <button id="btnLogin" class="btn btn-outline-primary btn-login" onclick="window.location.href='../index.html#login'">Login</button>
+          </li>
+          <li class="nav-item pl-2">
+            <button id="btnRegister" class="btn btn-primary" onclick="window.location.href='../index.html#register'">Cadastrar</button>
+          </li>
+      </ul>
+    </div>
   </div>
 </nav>
 
-<main class="container py-5" style="min-height:100vh; margin-top:120px;">
-  <!-- Introdução -->
-  <section class="mb-5">
-    <h2 class="display-4 text-center mb-3">Cardápio do Bistrô CETEC 2025</h2>
-    <p class="lead text-center">Todos os pratos foram desenvolvidos pelos alunos dos cursos técnicos, integrando criatividade, técnica e tradição. O cardápio é resultado de trabalho colaborativo e aprendizado prático.</p>
-  </section>
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="container">
+    <div class="page-header-content">
+      <h1>Cardápio Bistrô CETEC 2025</h1>
+      <p>Todos os pratos foram desenvolvidos pelos alunos dos cursos técnicos, integrando criatividade, técnica e tradição. Uma experiência gastronômica única criada por estudantes.</p>
+    </div>
+  </div>
+</header>
 
-  <!-- Entrada -->
-  <section class="mb-5">
-    <h3 class="text-uppercase text-primary mb-3">Entrada</h3>
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Bruschetta Mediterrânea</h5>
-        <p class="card-text">Pão artesanal, tomate confit, azeite de oliva e ervas frescas.</p>
+<!-- MAIN CONTENT -->
+<main class="container">
+
+  <!-- ENTRADA -->
+  <section class="menu-section">
+    <div class="section-header">
+      <h2><i class="fas fa-utensils"></i> Entrada</h2>
+      <p>Para começar com elegância</p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="dish-card">
+          <div class="dish-image">
+            <div class="dish-placeholder">
+              <i class="fas fa-bread-slice"></i>
+            </div>
+            <div class="dish-badge">Entrada</div>
+          </div>
+          <div class="dish-content">
+            <h3>Bruschetta Mediterrânea</h3>
+            <p>Pão artesanal crocante coberto com tomate confit aromático, regado com azeite de oliva extra virgem e finalizado com ervas frescas do jardim. Uma entrada leve e saborosa que transporta você para as costas do Mediterrâneo.</p>
+            <div class="dish-details">
+              <div class="dish-detail-item">
+                <i class="fas fa-leaf"></i>
+                <span>Vegetariano</span>
+              </div>
+              <div class="dish-detail-item">
+                <i class="fas fa-clock"></i>
+                <span>Preparo: 15 min</span>
+              </div>
+              <div class="dish-detail-item">
+                <i class="fas fa-fire"></i>
+                <span>Levemente quente</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Prato Principal -->
-  <section class="mb-5">
-    <h3 class="text-uppercase text-primary mb-3">Prato Principal</h3>
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Risoto de Ervas e Queijo</h5>
-        <p class="card-text">Risoto cremoso com ervas selecionadas, tomate confit e lascas de queijo.</p>
+  <!-- PRATO PRINCIPAL -->
+  <section class="menu-section">
+    <div class="section-header">
+      <h2><i class="fas fa-drumstick-bite"></i> Prato Principal</h2>
+      <p>O coração da experiência gastronômica</p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="dish-card">
+          <div class="dish-image">
+            <div class="dish-placeholder">
+              <i class="fas fa-bowl-rice"></i>
+            </div>
+            <div class="dish-badge">Principal</div>
+          </div>
+          <div class="dish-content">
+            <h3>Risoto de Ervas e Queijo</h3>
+            <p>Risoto cremoso preparado com arroz arbóreo, envolvido em um blend exclusivo de ervas selecionadas, tomate confit adocicado e generosas lascas de queijo artesanal. Cada garfada é uma explosão de sabores que se complementam harmoniosamente.</p>
+            <div class="dish-details">
+              <div class="dish-detail-item">
+                <i class="fas fa-leaf"></i>
+                <span>Vegetariano</span>
+              </div>
+              <div class="dish-detail-item">
+                <i class="fas fa-clock"></i>
+                <span>Preparo: 35 min</span>
+              </div>
+              <div class="dish-detail-item">
+                <i class="fas fa-cheese"></i>
+                <span>Contém laticínios</span>
+              </div>
+              <div class="dish-detail-item">
+                <i class="fas fa-fire"></i>
+                <span>Servido quente</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Segundo Prato -->
-  <section class="mb-5">
-    <h3 class="text-uppercase text-primary mb-3">Segundo Prato</h3>
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Salada do Estudante</h5>
-        <p class="card-text">Mix de folhas, grãos, legumes grelhados e vinagrete cítrico.</p>
+  <!-- SEGUNDO PRATO -->
+  <section class="menu-section">
+    <div class="section-header">
+      <h2><i class="fas fa-seedling"></i> Segundo Prato</h2>
+      <p>Frescor e equilíbrio</p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="dish-card">
+          <div class="dish-image">
+            <div class="dish-placeholder">
+              <i class="fas fa-salad"></i>
+            </div>
+            <div class="dish-badge">Acompanhamento</div>
+          </div>
+          <div class="dish-content">
+            <h3>Salada do Estudante</h3>
+            <p>Mix vibrante de folhas frescas e crocantes, combinado com grãos nutritivos, legumes grelhados coloridos e temperado com um vinagrete cítrico especial. Uma explosão de cores, texturas e sabores que celebra a criatividade dos nossos estudantes.</p>
+            <div class="dish-details">
+              <div class="dish-detail-item">
+                <i class="fas fa-leaf"></i>
+                <span>Vegano</span>
+              </div>
+              <div class="dish-detail-item">
+                <i class="fas fa-clock"></i>
+                <span>Preparo: 20 min</span>
+              </div>
+              <div class="dish-detail-item">
+                <i class="fas fa-heart"></i>
+                <span>Saudável</span>
+              </div>
+              <div class="dish-detail-item">
+                <i class="fas fa-snowflake"></i>
+                <span>Servido frio</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Sobremesa -->
-  <section class="mb-5">
-    <h3 class="text-uppercase text-primary mb-3">Sobremesa</h3>
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Doce da Convivência</h5>
-        <p class="card-text">Sobremesa coletiva criada pela oficina de confeitaria — pequena porção para prova.</p>
+  <!-- SOBREMESA -->
+  <section class="menu-section">
+    <div class="section-header">
+      <h2><i class="fas fa-birthday-cake"></i> Sobremesa</h2>
+      <p>O doce final perfeito</p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="dish-card">
+          <div class="dish-image">
+            <div class="dish-placeholder">
+              <i class="fas fa-cookie-bite"></i>
+            </div>
+            <div class="dish-badge">Sobremesa</div>
+          </div>
+          <div class="dish-content">
+            <h3>Doce da Convivência</h3>
+            <p>Sobremesa exclusiva criada pela oficina de confeitaria dos nossos estudantes. Cada porção é uma pequena obra de arte comestível, preparada coletivamente com ingredientes selecionados e muito carinho. Uma prova deliciosa que encerra a refeição com doçura e memórias especiais.</p>
+            <div class="dish-details">
+              <div class="dish-detail-item">
+                <i class="fas fa-users"></i>
+                <span>Criação coletiva</span>
+              </div>
+              <div class="dish-detail-item">
+                <i class="fas fa-clock"></i>
+                <span>Preparo: 40 min</span>
+              </div>
+              <div class="dish-detail-item">
+                <i class="fas fa-candy-cane"></i>
+                <span>Doce</span>
+              </div>
+              <div class="dish-detail-item">
+                <i class="fas fa-award"></i>
+                <span>Receita exclusiva</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- INFO BANNER -->
+  <div class="info-banner">
+    <h3><i class="fas fa-info-circle"></i> Informação Importante</h3>
+    <p>Os pratos apresentados fazem parte da experiência completa do Bistrô CETEC 2025 e não estão disponíveis para venda separadamente. O ingresso de R$ 120,00 garante acesso ao evento e degustação de todos os pratos do cardápio.</p>
+  </div>
+
 </main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <a href="https://www.ucs.br/site/cetec/" target="_blank" rel="noopener">
+        <img src="../img/cetec.png" alt="Logo CETEC" class="footer-logo">
+      </a>
+      <div class="footer-text text-right">
+        <p class="mb-0">Desenvolvido pelo curso técnico de TI 2025</p>
+        <p class="mb-0"><small>© 2025 CETEC - Todos os direitos reservados</small></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- BACK TO TOP -->
+<a href="#" class="back-to-top">
+  <i class="fa fa-angle-up"></i>
+</a>
+
+<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-<script src="../js/script.js"></script>
+
+<script>
+  // Navbar scroll effect
+  $(window).scroll(function() {
+    if ($(this).scrollTop() > 50) {
+      $('.navbar').addClass('scrolled');
+    } else {
+      $('.navbar').removeClass('scrolled');
+    }
+    
+    // Back to top button
+    if ($(this).scrollTop() > 300) {
+      $('.back-to-top').addClass('show');
+    } else {
+      $('.back-to-top').removeClass('show');
+    }
+  });
+  
+  // Smooth scroll
+  $('.back-to-top').on('click', function(e) {
+    e.preventDefault();
+    $('html, body').animate({
+      scrollTop: 0
+    }, 800);
+  });
+</script>
+
 </body>
 </html>

@@ -23,7 +23,7 @@ function updateNav() {
       }
     };
   } else {
-    btnLogin.innerHTML = "Registrar / Login";
+    btnLogin.innerHTML = "  Login";
     btnLogin.classList.remove("btn-light");
     btnLogin.classList.add("btn-outline-light");
     btnLogin.onclick = () => (window.location.href = "index.html#login");

@@ -3,15 +3,20 @@ import { auth } from "./firebase-config.js";
 // Atualiza a navbar conforme o status do usuário
 function updateNav() {
   const btnLogin = document.getElementById("btnLogin");
+  const btnRegister = document.getElementById("btnRegister");
   const btnOpenBuy = document.querySelector(".btn-light"); // botão "Comprar ingresso"
   const user = auth.currentUser;
 
   if (!btnLogin) return;
 
   if (user) {
+    // When logged in, show a single button with user info and hide register
     btnLogin.innerHTML = `Olá, ${user.displayName || user.email} <span class="small">(sair)</span>`;
+    btnLogin.classList.remove("btn-outline-primary");
     btnLogin.classList.remove("btn-outline-light");
     btnLogin.classList.add("btn-light");
+    if (btnRegister) btnRegister.style.display = "none";
+
     btnLogin.onclick = async () => {
       if (confirm("Deseja sair?")) {
         await auth.signOut();
@@ -23,14 +28,20 @@ function updateNav() {
       btnOpenBuy.title = "Comprar ingresso";
     }
   } else {
-    btnLogin.innerHTML = "Registrar / Login";
+    // Not logged: show both buttons and set their actions
+    btnLogin.innerHTML = "Login";
     btnLogin.classList.remove("btn-light");
-    btnLogin.classList.add("btn-outline-light");
-
-    // **Abrir modal Login com Bootstrap 4**
+    btnLogin.classList.add("btn-outline-primary");
     btnLogin.onclick = () => {
       $('#modalLogin').modal('show');
     };
+
+    if (btnRegister) {
+      btnRegister.style.display = "inline-block";
+      btnRegister.onclick = () => {
+        $('#modalRegister').modal('show');
+      };
+    }
 
     if (btnOpenBuy) {
       btnOpenBuy.disabled = true;
