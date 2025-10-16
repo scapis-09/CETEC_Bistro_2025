@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compra de Ingressos - Bistrô CETEC</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 4 CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="../img/logo.png" type="image/png">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html#">
+        <img src="../img/logo.png" alt="Logo Bistrô CETEC">
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navMain">
+        <span class="navbar-toggler-icon"><i class="fas fa-bars" style="color: var(--blue-deep);"></i></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav ml-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="../index.html#about">Sobre</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html#students">Estudantes</a></li>
+        <li class="nav-item"><a class="nav-link" href="../screens/cardapio.html">Cardápio</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html#infos">Informações</a></li>
+        <li class="nav-item nav-item-btn ml-lg-3 mt-3 mt-lg-0">
+          <a href="compra.html" class="btn btn-primary btn-block">Comprar Ingresso</a>
+        </li>
+        <li class="nav-item nav-item-btn ml-lg-2 mt-2 mt-lg-0">
+          <button id="btnLogin" class="btn btn-outline-primary btn-block">Login</button>
+        </li>
+        <li class="nav-item nav-item-btn ml-lg-2 mt-2 mt-lg-0">
+          <button id="btnRegister" class="btn btn-primary btn-block">Cadastrar</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <section class="page-header">
+    <div class="page-header-content">
+      <h1><i class="fas fa-ticket-alt"></i> Compra de Ingressos</h1>
+      <p>Complete os dados abaixo para garantir seu ingresso para o Bistrô CETEC 2025</p>
+    </div>
+  </section>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <section class="purchase-section">
+    <div class="container">
+      <div class="purchase-card">
+        <h3>Dados da Compra</h3>
+
+        <div class="info-box">
+          <i class="fas fa-info-circle"></i>
+          <strong>Informações importantes:</strong> Os ingressos são pessoais e intransferíveis. O CPF do aluno deve estar cadastrado no sistema.
+        </div>
+
+        <form id="formCompra">
+          
+          <!-- Seção: Verificação do Aluno -->
+          <div class="form-section">
+            <div class="form-section-title">
+              <i class="fas fa-user-check"></i>
+              Verificação do Aluno
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="cpf" class="form-label">CPF do aluno *</label>
+                <input type="text" id="cpf" class="form-control" placeholder="000.000.000-00" required>
+                <small id="cpfStatus" class="d-block mt-2"></small>
+              </div>
+              <div class="col-md-6 mb-3 d-flex align-items-end">
+                <button type="button" id="btnVerificarCPF" class="btn btn-secondary w-100">
+                  <i class="fas fa-search"></i> Verificar CPF
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Seção: Dados do Pagador -->
+          <div class="form-section">
+            <div class="form-section-title">
+              <i class="fas fa-credit-card"></i>
+              Dados do Pagador
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="cpfPagador" class="form-label">CPF do pagador *</label>
+                <input type="text" id="cpfPagador" class="form-control" placeholder="000.000.000-00" required>
+                <small class="text-muted d-block mt-1">Pode ser o mesmo CPF do aluno ou de um responsável</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Seção: Ingressos (oculta até verificar CPF) -->
+          <div id="camposCompra" class="collapse-fields">
+            <div class="form-section">
+              <div class="form-section-title">
+                <i class="fas fa-users"></i>
+                Quantidade de Ingressos
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="quantity" class="form-label">Quantidade *</label>
+                  <input type="number" id="quantity" class="form-control" min="1" value="1" required>
+                  <small id="maxInfo" class="text-muted d-block mt-1"></small>
+                </div>
+              </div>
+
+              <div id="extraFields"></div>
+            </div>
+
+            <!-- Total e Finalizar -->
+            <div class="total-section">
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <h5 class="mb-0">
+                  <i class="fas fa-calculator"></i> Total: <span id="buyTotal">R$ 120,00</span>
+                </h5>
+                <button type="submit" id="btnFinalizar" class="btn btn-primary btn-finalizar">
+                  <i class="fas fa-check-circle"></i> Finalizar Compra
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <a href="https://www.ucs.br/site/cetec/" target="_blank" rel="noopener">
+          <img src="../img/cetec.png" alt="Logo CETEC" class="footer-logo">
+        </a>
+        <div class="footer-text text-right">
+          <p class="mb-0">Desenvolvido pelo curso técnico de TI 2025</p>
+          <p class="mb-0"><small>© 2025 CETEC - Todos os direitos reservados</small></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Navbar scroll effect
+    $(window).scroll(function() {
+      if ($(this).scrollTop() > 50) {
+        $('.navbar').addClass('scrolled');
+      } else {
+        $('.navbar').removeClass('scrolled');
+      }
+    });
+
+    // Simulação de verificação de CPF
+    $('#btnVerificarCPF').click(function() {
+      const cpf = $('#cpf').val();
+      if (!cpf) {
+        $('#cpfStatus').html('<span class="text-danger"><i class="fas fa-times-circle"></i> Por favor, digite um CPF</span>');
+        return;
+      }
+
+      // Simulação de verificação
+      $('#cpfStatus').html('<span class="text-success"><i class="fas fa-check-circle"></i> CPF verificado com sucesso!</span>');
+      $('#camposCompra').addClass('show');
+    });
+
+    // Atualizar total
+    $('#quantity').on('input', function() {
+      const qty = parseInt($(this).val()) || 1;
+      const total = qty * 120;
+      $('#buyTotal').text('R$ ' + total.toFixed(2).replace('.', ','));
+    });
+
+    // Formulário submit
+    $('#formCompra').submit(function(e) {
+      e.preventDefault();
+      alert('Compra finalizada com sucesso! (Esta é uma demonstração)');
+    });
+  </script>
+
+  <!-- Firebase -->
+  <script type="module" src="../js/cadastro.js"></script>
+  <script type="module" src="../js/script.js"></script>
+  <script type="module" src="../js/login.js"></script>
+  <script type="module" src="../js/compra.js"></script>
+  <script src="../js/ticket.js"></script>
+
+</body>
+</html>
