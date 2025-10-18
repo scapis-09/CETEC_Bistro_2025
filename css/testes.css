@@ -1,0 +1,88 @@
+/* --- SEÇÃO DOS ALUNOS --- */
+.section-white {
+  position: relative;
+  background: url("../img/tiles.jpg") repeat center/500px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.section-white::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 60, 90, 1) 0%, rgba(0, 60, 90, 0.5) 60%);
+  backdrop-filter: blur(4px);
+  z-index: 1;
+}
+
+/* CONTAINER */
+.section-white .container {
+  position: relative;
+  z-index: 2;
+  color: white;
+  text-align: center;
+  max-width: 1100px;
+  padding: 60px 20px;
+}
+
+/* TÍTULO */
+.section-white .section-title h4 {
+  color: #a3d4c9;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.section-white .section-title h2 {
+  color: #ffffff;
+  font-size: 2.8rem;
+  font-family: "Playfair Display", serif;
+  margin-bottom: 60px;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* CARDS */
+.student-card {
+  background: #ffffff;
+  color: #333;
+  border-radius: 18px;
+  padding: 35px 30px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  border-top: 6px solid #8aa03f; /* oliva */
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.student-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.35);
+}
+
+/* TÍTULOS DOS CARDS */
+.student-card h5 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #004b70;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ÍCONES */
+.text-olive {
+  color: #8aa03f !important;
+  font-size: 1.3rem;
+}
+
+/* TEXTO */
+.student-card p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #444;
+  text-align: justify;
+}
+
