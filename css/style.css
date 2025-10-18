@@ -246,6 +246,7 @@ html {
   min-height: 100vh;
   background: 
     linear-gradient(to bottom, rgba(255, 255, 255) 15%, rgba(255, 255, 255, 0) 30%),
+    linear-gradient(to top, rgba(11, 96, 150, 1) 5%, rgba(255, 255, 255, 0) 10%),
     url(../img/hero1.jpg);
   background-size: cover;
   background-position: center;
@@ -607,11 +608,25 @@ html {
 }
 
 .section-sand {
-  background: var(--sand);
+  background:  
+    linear-gradient(to bottom, rgba(11, 96, 150, 1) 1%, rgba(255, 255, 255, 0) 5%),
+    url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+  height: 100vh; /* ocupa 100% da altura da tela */
+  display: flex; /* opcional, se quiser centralizar conteúdo */
+  justify-content: center;
+  align-items: center;
+
 }
 
 .section-white {
-  background: white;
+  background-color: var(--white);
+  background-image: url("../img/tiles.jpg");
+  background-repeat: repeat;
+  background-size: 400px 400px; /* Define o tamanho de cada tile */
+  height: 100vh; /* ocupa 100% da altura da tela */
+  display: flex; /* opcional, se quiser centralizar conteúdo */
+  justify-content: center;
+  align-items: center;
 }
 
 .section-olive {
@@ -622,6 +637,10 @@ html {
 .section-blue {
   background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-sea) 100%);
   color: white;
+  height: 120vh; /* ocupa 100% da altura da tela */
+  display: flex; /* opcional, se quiser centralizar conteúdo */
+  justify-content: center;
+  align-items: center;
 }
 
 .section-title {
@@ -759,7 +778,7 @@ html {
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 12px 40px rgba(0,0,0,0.2);
-  height: 450px;
+  height: 877px;
 }
 
 .map-container iframe {

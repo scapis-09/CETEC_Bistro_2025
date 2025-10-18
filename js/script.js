@@ -1,4 +1,4 @@
-import { auth } from "./firebase-config.js";
+import { auth } from "../firebase-config.js";
 
 // Atualiza a navbar conforme o status do usuário
 function updateNav() {
